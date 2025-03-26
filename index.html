@@ -1,0 +1,182 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2575.4">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;Блэкджек&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>body {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-family: Arial, sans-serif;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>text-align: center;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #f0f0f0;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>#game {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin: 20px auto;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>width: 600px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #fff;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 0 10px rgba(0,0,0,0.1);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.card {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>display: inline-block;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>width: 70px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>height: 100px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin: 5px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #fff;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border: 1px solid #000;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 5px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>line-height: 100px;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>button {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 10px 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin: 5px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>cursor: pointer;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="game"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;h1&gt;Блэкджек&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;h2&gt;Ваши карты: &lt;span id="playerScore"&gt;0&lt;/span&gt;&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="playerCards"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;h2&gt;Карты дилера: &lt;span id="dealerScore"&gt;0&lt;/span&gt;&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="dealerCards"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="result"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button onclick="startGame()"&gt;Новая игра&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button onclick="hit()"&gt;Взять карту&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button onclick="stand()"&gt;Стоп&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let playerCards = [];</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let dealerCards = [];</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let gameOver = false;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const suits = ['♠', '♥', '♦', '♣'];</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function createDeck() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let deck = [];</p>
+<p class="p1"><span class="Apple-converted-space">            </span>for (let suit of suits) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>for (let value of values) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>deck.push(value + suit);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>return deck;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function getCardValue(card) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const value = card.slice(0, -1);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (value === 'A') return 11;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (['J', 'Q', 'K'].includes(value)) return 10;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>return parseInt(value);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function calculateScore(cards) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let score = 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let aces = 0;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>for (let card of cards) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>let value = getCardValue(card);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (value === 11) aces++;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>score += value;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>while (score &gt; 21 &amp;&amp; aces &gt; 0) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>score -= 10;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>aces--;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>return score;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function drawCard(deck) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const index = Math.floor(Math.random() * deck.length);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const card = deck[index];</p>
+<p class="p1"><span class="Apple-converted-space">            </span>deck.splice(index, 1);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>return card;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function updateDisplay() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('playerCards').innerHTML = playerCards.map(card =&gt;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>`&lt;div class="card"&gt;${card}&lt;/div&gt;`).join('');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('dealerCards').innerHTML = dealerCards.map(card =&gt;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>`&lt;div class="card"&gt;${card}&lt;/div&gt;`).join('');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('playerScore').textContent = calculateScore(playerCards);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('dealerScore').textContent = calculateScore(dealerCards);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function checkWin() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const playerScore = calculateScore(playerCards);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const dealerScore = calculateScore(dealerCards);</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (playerScore &gt; 21) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>endGame('Вы проиграли! Перебор.');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else if (dealerScore &gt; 21) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>endGame('Вы выиграли! У дилера перебор.');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else if (gameOver) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (playerScore &gt; dealerScore) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>endGame('Вы выиграли!');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>} else if (dealerScore &gt; playerScore) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>endGame('Дилер выиграл!');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>endGame('Ничья!');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function endGame(message) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>gameOver = true;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('result').textContent = message;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function startGame() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let deck = createDeck();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>playerCards = [drawCard(deck), drawCard(deck)];</p>
+<p class="p1"><span class="Apple-converted-space">            </span>dealerCards = [drawCard(deck), drawCard(deck)];</p>
+<p class="p1"><span class="Apple-converted-space">            </span>gameOver = false;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('result').textContent = '';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>updateDisplay();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function hit() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!gameOver) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>let deck = createDeck();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>playerCards.push(drawCard(deck));</p>
+<p class="p1"><span class="Apple-converted-space">                </span>updateDisplay();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>checkWin();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function stand() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!gameOver) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>let deck = createDeck();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>while (calculateScore(dealerCards) &lt; 17) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>dealerCards.push(drawCard(deck));</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>updateDisplay();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>gameOver = true;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>checkWin();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Начало новой игры при загрузке</p>
+<p class="p1"><span class="Apple-converted-space">        </span>startGame();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
